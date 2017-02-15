@@ -37,7 +37,7 @@ java -jar picard.jar CreateSequenceDictionary R= genome.fa O= genome.dict
 #tabix -p vcf ~/inhouse.vcf.gz
 
 # run variant annotator
-$java -jar GenomeAnalysisTK.jar -nt -T VariantAnnotator -R genome.fa -o output.inhouse.vcf.gz --resource:Inhouse ~/inhouse.vcf.gz --resourceAlleleConcordance -E Inhouse.PreviousClassification -V ~/inhouse.vcf.gz
+$java -jar GenomeAnalysisTK.jar -nt 4 -T VariantAnnotator -R genome.fa -o output.inhouse.vcf.gz --resource:Inhouse ~/inhouse.vcf.gz --resourceAlleleConcordance -E Inhouse.PreviousClassification -V ~/inhouse.vcf.gz
 #tabix -p vcf output.inhouse.vcf.gz
 
 #mark-section "uploading results"
