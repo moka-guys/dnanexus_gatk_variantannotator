@@ -37,13 +37,15 @@ java -jar picard.jar CreateSequenceDictionary R= genome.fa O= genome.dict
 tabix -p vcf ~/inhouse.vcf.gz
 
 # run variant annotator
-$java -jar GenomeAnalysisTK.jar -nt 4 -T VariantAnnotator -R genome.fa -o output.inhouse.vcf.gz --resource:Inhouse ~/inhouse.vcf.gz --resourceAlleleConcordance -E Inhouse.PreviousClassification -V ~/inhouse.vcf.gz
+$java -jar GenomeAnalysisTK.jar -nt 4 -T VariantAnnotator -R genome.fa -V ~/test.vcf -o output.vcf.gz --resource:Inhouse ~/inhouse.vcf.gz --resourceAlleleConcordance -E Inhouse.PreviousClassification
 #tabix -p vcf output.inhouse.vcf.gz
 
 #mark-section "uploading results"
 mkdir -p ~/out/vcf/output/ 
-mv output.inhouse.vcf.gz ~/out/vcf/output/"$test_vcf_prefix".inhouse.vcf.gz
-mv output.inhouse.vcf.gz.tbi ~/out/vcf/output/"$test_vcf_prefix".inhouse.vcf.gz.tbi
+mv output.vcf.gz ~/out/vcf/output/"$test_vcf_prefix".annotatedwithinhouse.vcf.gz
+mv output.vcf.gz.tbi ~/out/vcf/output/"$test_vcf_prefix".annotatedwithinhouse.vcf.gz.tbi
+#temporary outputs
+mv inhouse.vcf.gz.tbi ~/out/vcf/output/inhouse.vcf.gz.tbi
 mv genome.fa ~/out/vcf/output/genome.fa
 mv genome.fa.fai ~/out/vcf/output/genome.fa.fai
 mv genome.dict ~/out/vcf/output/genome.dict
