@@ -38,8 +38,8 @@
   "outputSpec": [
     {
       "name": "vcf",
-      "label": "Refined mappings (BAM)",
-      "help": "A coordinate-sorted BAM file with the refined mappings.",
+      "label": "Output files including annotated VCF",
+      "help": "Output files including annotated VCF.",
       "class": "array:file"
     }
   ],
