@@ -6,6 +6,7 @@ set -e -x -o pipefail
 
 dx-download-all-inputs --parallel
 
+# move inputs to home
 mv ~/in/gatk_jar_file/* ~/GenomeAnalysisTK.jar
 mv ~/in/inhouse_annotations/* ~/inhouse.vcf.gz
 mv ~/in/test_vcf/* ~/test.vcf
@@ -15,18 +16,6 @@ mv ~/in/reference_genome/* ~/genome.fa
 # Show the java version the worker is using
 echo $(java -version)
 
-#
-# #mark-section "downloading reference genome"
-# genome=b37
-# subgenome=hs37d5
-# genome=hg19
-# subgenome=hg19
-
-# APPDATA=project-B6JG85Z2J35vb6Z7pQ9Q02j8
-# dx cat "$APPDATA:/misc/gatk_resource_archives/gatk.resources.${genome}.tar" | tar xf -
-# dx cat "$APPDATA:/misc/gatk_resource_archives/${subgenome}.fasta-index.tar.gz" | tar zxf -
-
-#ls
 
 # Use java7 as the default java version. 
 # If java7 doesn't work with the GATK version (3.6 and above) then switch to java8 and try again.
@@ -40,13 +29,16 @@ java -jar GenomeAnalysisTK.jar -version || (update-alternatives --set java /usr/
 head -n1 /proc/meminfo | awk '{print int($2*0.8/1024)}' >.mem_in_mb.txt
 java="java -Xmx$(<.mem_in_mb.txt)m"
 
+#  create the reference indexes
 samtools faidx genome.fa
 java -jar picard.jar CreateSequenceDictionary R= genome.fa O= genome.dict
 
+# index the inhouse vcf
 tabix -p vcf ~/inhouse.vcf.gz
 
+# run variant annotator
 $java -jar GenomeAnalysisTK.jar -T VariantAnnotator -R genome.fa -o output.inhouse.vcf.gz --resource:Inhouse ~/inhouse.vcf.gz --resourceAlleleConcordance -E Inhouse.PreviousClassification -V ~/inhouse.vcf.gz
-tabix -p vcf output.inhouse.vcf.gz
+#tabix -p vcf output.inhouse.vcf.gz
 
 #mark-section "uploading results"
 mkdir -p ~/out/vcf/output/ 
