@@ -44,6 +44,9 @@ $java -jar GenomeAnalysisTK.jar -nt 4 -T VariantAnnotator -R genome.fa -o output
 mkdir -p ~/out/vcf/output/ 
 mv output.inhouse.vcf.gz ~/out/vcf/output/"$test_vcf_prefix".inhouse.vcf.gz
 mv output.inhouse.vcf.gz.tbi ~/out/vcf/output/"$test_vcf_prefix".inhouse.vcf.gz.tbi
+mv genome.fa ~/out/vcf/output/genome.fa
+mv genome.fa.fai ~/out/vcf/output/genome.fa.fai
+mv genome.dict ~/out/vcf/output/genome.dict
 
 #
 # Upload results
