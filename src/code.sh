@@ -33,8 +33,8 @@ java="java -Xmx$(<.mem_in_mb.txt)m"
 samtools faidx genome.fa
 java -jar picard.jar CreateSequenceDictionary R= genome.fa O= genome.dict
 
-# index the inhouse vcf ## Wook: don't this this is required?
-#tabix -p vcf ~/inhouse.vcf.gz
+# index the inhouse vcf
+tabix -p vcf ~/inhouse.vcf.gz
 
 # run variant annotator
 $java -jar GenomeAnalysisTK.jar -nt 4 -T VariantAnnotator -R genome.fa -o output.inhouse.vcf.gz --resource:Inhouse ~/inhouse.vcf.gz --resourceAlleleConcordance -E Inhouse.PreviousClassification -V ~/inhouse.vcf.gz
