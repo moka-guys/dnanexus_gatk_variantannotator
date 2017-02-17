@@ -44,9 +44,9 @@
   "outputSpec": [
     {
       "name": "vcf",
-      "label": "Output files including annotated VCF",
-      "help": "Output files including annotated VCF.",
-      "class": "array:file"
+      "label": "Output annotated VCF",
+      "help": "Output annotated VCF.",
+      "class": "file"
     }
   ],
   "runSpec": {

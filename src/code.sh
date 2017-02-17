@@ -26,7 +26,7 @@ tar zxf genome.tar.gz
 
 # rename genome files to grch37 so that the VCF header states the reference to be grch37.fa, which then allows Ingenuity to accept the VCFs (otherwise VCF header would have reference as genome.fa which Ingenuity won't accept)
 mv genome.fa grch37.fa
-mv genome.fai grch37.fai
+mv genome.fa.fai grch37.fa.fai
 mv genome.dict grch37.dict
 
 # Index the vcfs
