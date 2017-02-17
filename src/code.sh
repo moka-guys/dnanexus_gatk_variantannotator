@@ -22,8 +22,12 @@ head -n1 /proc/meminfo | awk '{print int($2*0.8/1024)}' >.mem_in_mb.txt
 java="java -Xmx$(<.mem_in_mb.txt)m"
 
 # Decompress reference genome bundle for GATK
-# Assumes that hs37d5 has been used for alignment
 tar zxf genome.tar.gz
+
+# rename genome files to grch37 so that the VCF header states the reference to be grch37.fa, which then allows Ingenuity to accept the VCFs (otherwise VCF header would have reference as genome.fa which Ingenuity won't accept)
+mv genome.fa grch37.fa
+mv genome.fai grch37.fai
+mv genome.dict grch37.dict
 
 # Index the vcfs
 mark-section "Index vcf files"
@@ -32,7 +36,7 @@ tabix -p vcf ~/sample.vcf.gz
 
 # Run variant annotator
 mark-section "Run GATK VariantAnnotator"
-$java -jar GenomeAnalysisTK.jar -nt 4 -T VariantAnnotator -R genome.fa -V sample.vcf.gz -o output.vcf.gz --resource:inhouse inhouse.vcf.gz --resourceAlleleConcordance -E inhouse.PrevClass 
+$java -jar GenomeAnalysisTK.jar -nt 4 -T VariantAnnotator -R grch37.fa -V sample.vcf.gz -o output.vcf.gz --resource:inhouse inhouse.vcf.gz --resourceAlleleConcordance -E inhouse.PrevClass 
 
 # Send output back to DNAnexus project
 mark-section "Upload output"
