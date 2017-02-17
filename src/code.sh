@@ -4,56 +4,40 @@
 # and to output each line as it is executed -- useful for debugging
 set -e -x -o pipefail
 
+#Grab inputs
 dx-download-all-inputs --parallel
 
-# move inputs to home
+# Move inputs to home
 mv ~/in/gatk_jar_file/* ~/GenomeAnalysisTK.jar
-mv ~/in/inhouse_annotations/* ~/inhouse.vcf.gz
-mv ~/in/test_vcf/* ~/test.vcf
-mv ~/in/reference_genome/* ~/genome.fa
+mv ~/in/prev_class/* ~/inhouse.vcf.gz
+mv ~/in/sample_vcf/* ~/sample.vcf.gz
+mv ~/in/reference_genome/* ~/genome.tar.gz
 
-# Show all the java versions installed on this worker
 # Show the java version the worker is using
+# Note: Have only specified java8 in json as opposed to loading up 7 & 8 as per DNAnexus GATK app - that's only really necessary if you want to be able to use older versions of GATK, which we don't do
 echo $(java -version)
 
-
-# Use java7 as the default java version. 
-# If java7 doesn't work with the GATK version (3.6 and above) then switch to java8 and try again.
-#
-update-alternatives --set java /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java
-java -jar GenomeAnalysisTK.jar -version || (update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java && java -jar GenomeAnalysisTK.jar -version)
-
-#
 # Calculate 80% of memory size, for java
-#
 head -n1 /proc/meminfo | awk '{print int($2*0.8/1024)}' >.mem_in_mb.txt
 java="java -Xmx$(<.mem_in_mb.txt)m"
 
-#  create the reference indexes
-samtools faidx genome.fa
-java -jar picard.jar CreateSequenceDictionary R= genome.fa O= genome.dict
+# Decompress reference genome bundle for GATK
+# Assumes that hs37d5 has been used for alignment
+tar zxf genome.tar.gz
 
-# index the inhouse vcf
+# Index the vcfs
+mark-section "Index vcf files"
 tabix -p vcf ~/inhouse.vcf.gz
+tabix -p vcf ~/sample.vcf.gz
 
-# run variant annotator
-$java -jar GenomeAnalysisTK.jar -nt 4 -T VariantAnnotator -R genome.fa -V test.vcf -o output.vcf.gz --resource:Inhouse inhouse.vcf.gz --resourceAlleleConcordance -E Inhouse.PreviousClassification 
-#$java -jar GenomeAnalysisTK.jar -nt 4 -T VariantAnnotator -R genome.fa -V ~/test.vcf -o output.vcf.gz --resource:Inhouse ~/inhouse.vcf.gz --resourceAlleleConcordance -E Inhouse.PreviousClassification
-#tabix -p vcf output.inhouse.vcf.gz
+# Run variant annotator
+mark-section "Run GATK VariantAnnotator"
+$java -jar GenomeAnalysisTK.jar -nt 4 -T VariantAnnotator -R genome.fa -V sample.vcf.gz -o output.vcf.gz --resource:inhouse inhouse.vcf.gz --resourceAlleleConcordance -E inhouse.PrevClass 
 
-#mark-section "uploading results"
+# Send output back to DNAnexus project
+mark-section "Upload output"
 mkdir -p ~/out/vcf/output/ 
-mv output.vcf.gz ~/out/vcf/output/"$test_vcf_prefix".annotatedwithinhouse.vcf.gz
-mv output.vcf.gz.tbi ~/out/vcf/output/"$test_vcf_prefix".annotatedwithinhouse.vcf.gz.tbi
-
-#temporary outputs
-#mv inhouse.vcf.gz.tbi ~/out/vcf/output/inhouse.vcf.gz.tbi
-#mv genome.fa ~/out/vcf/output/genome.fa
-#mv genome.fa.fai ~/out/vcf/output/genome.fa.fai
-#mv genome.dict ~/out/vcf/output/genome.dict
-
-#
-# Upload results
-#
+mv output.vcf.gz ~/out/vcf/output/"$sample_vcf_prefix".PrevClass.vcf.gz
 dx-upload-all-outputs --parallel
-#mark-success
+
+mark-success

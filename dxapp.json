@@ -17,22 +17,28 @@
       "optional": false
     },
     {
-      "name": "inhouse_annotations",
-      "label": "Inhouse annotation vcf file",
+      "name": "prev_class",
+      "label": "Previous classifications",
       "help": "A vcf file containing the previous classifications of variants.",
-      "class": "file"
+      "class": "file",
+      "patterns": ["*.vcf.gz"],
+      "optional": false
+    },
+    {
+      "name": "sample_vcf",
+      "label": "Sample vcf",
+      "help": "Sample vcf.",
+      "class": "file",
+      "patterns": ["*.vcf.gz"],
+      "optional": false
     },
     {
       "name": "reference_genome",
-      "label": "Reference genome fasta file",
-      "help": "Fasta fiile.",
-      "class": "file"
-    },
-    {
-      "name": "test_vcf",
-      "label": "Test vcf",
-      "help": "Test vcf.",
-      "class": "file"
+      "label": "Reference genome hs37ds bundle for GATK",
+      "help": "Reference genome hs37ds bundle for GATK.",
+      "class": "file",
+      "patterns": ["*.tar.gz"],
+      "optional": false
     }
   ],
   "outputSpec": [
@@ -45,9 +51,6 @@
   ],
   "runSpec": {
     "execDepends": [
-      {
-        "name": "openjdk-7-jre-headless"
-      },
       {
         "name": "openjdk-8-jre-headless"
       }
