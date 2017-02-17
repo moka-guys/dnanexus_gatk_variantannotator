@@ -1,9 +1,8 @@
 # dnanexus_gatk_variantannotator
 
-Uses GATK VariantAnnotator function to annotate sample's VCF with INFO fields from another VCF.
+Uses GATK VariantAnnotator function to annotate sample's VCF with INFO fields from another VCF (previous classifications).
 
-Requires the sample VCF to be derived from alignment to hs37ds.
-This is the case for samples run through Mokapipe.
+Requires that the two VCFs are compatible with each other, which for our purposes means that the sample VCF is derived from alignment to hs37ds through Mokapipe, and the previous classifications VCF appears to have been generated the same way.
 
 ##Inputs:
 * GATK app
