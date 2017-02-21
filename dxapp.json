@@ -1,0 +1,69 @@
+{
+  "name": "gatk3_variantannotator",
+  "title": "GATK3 VariantAnnotator",
+  "summary": "(Requires a user-provided GATK 3.x jar file). Annotates variants with previoous classifications.",
+  "tags": [
+    "annotation",
+    "Pipelines"
+  ],
+  "dxapi": "1.0.0",
+  "inputSpec": [
+    {
+      "name": "gatk_jar_file",
+      "label": "GATK jar file",
+      "help": "The GenomeAnalysisTK.jar file",
+      "class": "file",
+      "patterns": ["GenomeAnalysisTK*.jar"],
+      "optional": false
+    },
+    {
+      "name": "prev_class",
+      "label": "Previous classifications",
+      "help": "A vcf file containing the previous classifications of variants.",
+      "class": "file",
+      "patterns": ["*.vcf.gz"],
+      "optional": false
+    },
+    {
+      "name": "sample_vcf",
+      "label": "Sample vcf",
+      "help": "Sample vcf.",
+      "class": "file",
+      "patterns": ["*.vcf.gz"],
+      "optional": false
+    },
+    {
+      "name": "reference_genome",
+      "label": "Reference genome hs37ds bundle for GATK",
+      "help": "Reference genome hs37ds bundle for GATK.",
+      "class": "file",
+      "patterns": ["*.tar.gz"],
+      "optional": false
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "vcf",
+      "label": "Output annotated VCF",
+      "help": "Output annotated VCF.",
+      "class": "file"
+    }
+  ],
+  "runSpec": {
+    "execDepends": [
+      {
+        "name": "openjdk-8-jre-headless"
+      }
+    ],
+    "systemRequirements": {
+      "main": {
+        "instanceType": "mem1_ssd1_x4"
+      }
+    },
+    "file": "src/code.sh",
+    "interpreter": "bash"
+  },
+  "access": {
+    "project": "VIEW"
+  }
+}
