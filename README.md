@@ -20,4 +20,4 @@ Requires that the two VCFs are compatible with each other, which for our purpose
 ## What does this app output?
 An annotated vcf
 
-### This App was created by Viapath Genomic Informatics section.
+### This App was created by Viapath Genome Informatics section.
