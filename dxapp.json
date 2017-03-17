@@ -1,13 +1,13 @@
 {
   "name": "gatk3_variantannotator",
   "title": "GATK3 VariantAnnotator",
-  "summary": "(Requires a user-provided GATK 3.x jar file). Annotates variants with previoous classifications.",
+  "summary": "v1.1.1 - (Requires a user-provided GATK 3.x jar file). Annotates variants with previoous classifications.",
   "tags": [
     "annotation",
     "Pipelines"
   ],
   "properties": {
-    "github release": "v1.1"
+    "github release": "v1.1.1"
   },
   "dxapi": "1.0.0",
   "inputSpec": [
