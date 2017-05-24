@@ -41,7 +41,7 @@ $java -jar GenomeAnalysisTK.jar -nt 4 -T VariantAnnotator -R grch37.fa -V sample
 # Send output back to DNAnexus project
 mark-section "Upload output"
 mkdir -p ~/out/vcf/output/ 
-mv output.vcf.gz ~/out/vcf/output/"$sample_vcf_prefix".PrevClass.vcf.gz
+mv output.vcf.gz ~/out/vcf/output/"$sample_vcf_prefix".refined.vcf.gz
 dx-upload-all-outputs --parallel
 
 mark-success
