@@ -1,4 +1,4 @@
-# GATK Variant annotator v1.1.1
+# GATK Variant annotator v1.2
 
 **Please read this important information before running the app.**
 ## What does this app do?
@@ -18,6 +18,6 @@ Requires that the two VCFs are compatible with each other, which for our purpose
 
 
 ## What does this app output?
-An annotated vcf
+An annotated vcf (named refined.vcf to match the BAM file so can be viewed using biodalliance viewer)
 
 ### This App was created by Viapath Genome Informatics section.
