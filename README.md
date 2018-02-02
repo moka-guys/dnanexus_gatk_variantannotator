@@ -1,4 +1,4 @@
-# GATK Variant annotator v1.2
+# GATK Variant annotator v1.3
 
 **Please read this important information before running the app.**
 ## What does this app do?

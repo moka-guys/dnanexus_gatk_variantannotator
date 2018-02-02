@@ -1,13 +1,13 @@
 {
   "name": "gatk3_variantannotator",
   "title": "GATK3 VariantAnnotator",
-  "summary": "v1.2 - (Requires a user-provided GATK 3.x jar file). Annotates variants with previoous classifications.",
+  "summary": "v1.3 - (Requires a user-provided GATK 3.x jar file). Annotates variants with previoous classifications.",
   "tags": [
     "annotation",
     "Pipelines"
   ],
   "properties": {
-    "github release": "v1.2"
+    "github release": "v1.3"
   },
   "dxapi": "1.0.0",
   "inputSpec": [
@@ -58,13 +58,22 @@
         "name": "openjdk-8-jre-headless"
       }
     ],
+    "systemRequirementsByRegion": {
+      "aws:us-east-1": {
+        "main": {
+          "instanceType": "mem1_ssd1_x8"
+        }
+      }
+    },
     "systemRequirements": {
       "main": {
         "instanceType": "mem1_ssd1_x8"
       }
     },
     "file": "src/code.sh",
-    "interpreter": "bash"
+    "release": "14.04",
+    "interpreter": "bash",
+    "distribution": "Ubuntu"
   },
   "access": {
     "project": "VIEW"
